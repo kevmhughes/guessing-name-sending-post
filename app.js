@@ -1,5 +1,6 @@
 //Generate a random number between 1 and 500
 let randomNumber = parseInt(Math.random() * 100 + 1);
+console.log(randomNumber);
 const submit = document.querySelector("#subt");
 const userInput = document.querySelector("#guessField");
 const guessSlot = document.querySelector(".guesses");
@@ -73,13 +74,50 @@ function validateGuess(guess) {
 async function sendScoreToServer() {
   // TODO: Establecer adecuadamente el valor de las propiedades elapsed_time y attempts
   const score = {
-    machine: "",
-    elapsed_time: 0,
-    attempts: 0,
+    machine: "Kevin",
+    elapsed_time: 3600 - remainingSeconds,
+    attempts: 11 - numGuesses,
   };
   // TODO: CODE ME!! Haz el POST con la función fetch.
-  console.log("Enviando los datos al servidor de King.com"); //POST
+  console.log("Enviando los datos al servidor de King.com");
+
   // Enviamos los datos al endpoint
+  async function sendData() {
+    let response = await fetch(
+      "https://guessing-name-score-api.onrender.com/add-score",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(score),
+      }
+    );
+
+    let data = await response.json();
+
+    console.log(data);
+  }
+
+  // Recibimos datos del endpoint
+  async function getData() {
+    let response = await fetch(
+      "https://guessing-name-score-api.onrender.com/get-scores"
+    );
+
+    let data = await response.json();
+
+    data.forEach((c) => {
+      const result = document.createElement("tr");
+      result.innerHTML = `<th>${c.machine}</th>
+      <th>${c.attempts}</th>
+      <th>${c.elapsed_time}</th>`;
+      document.querySelector(".table").appendChild(result);
+    });
+  }
+
+  sendData();
+  getData();
 }
 
 function checkGuess(guess) {
