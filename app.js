@@ -107,11 +107,11 @@ async function sendScoreToServer() {
 
     let data = await response.json();
 
-    data.forEach((c) => {
+    data.forEach((d) => {
       const result = document.createElement("tr");
-      result.innerHTML = `<th>${c.machine}</th>
-      <th>${c.attempts}</th>
-      <th>${c.elapsed_time}</th>`;
+      result.innerHTML = `<th>${d.machine}</th>
+      <th>${d.attempts}</th>
+      <th>${d.elapsed_time}</th>`;
       document.querySelector(".table").appendChild(result);
     });
   }
